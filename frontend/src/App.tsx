@@ -1,7 +1,8 @@
 // src/App.tsx (Updated)
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import type { Event } from "./types";
-import { mockEvents } from "./types";
+
+// import { mockEvents } from "./types";
 
 import EventList from "./components/EventList";
 import SearchBar from "./components/SearchBar";
@@ -10,10 +11,59 @@ import type { EventFormData } from "./components/EventForm";
 import EventForm from "./components/EventForm";
 
 const App: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>(mockEvents);
-  const [nextId, setNextId] = useState<number>(
-    Math.max(...mockEvents.map((e) => e.id)) + 1
-  );
+  // State for the list of events using mock data
+  // const [events, setEvents] = useState<Event[]>(mockEvents);
+
+  const [events, setEvents] = useState<Event[]>([]); // Start with empty array
+  const API_URL = "http://127.0.0.1:8000/events";
+
+  // 1. FETCH Events from API
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      setEvents(data);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  // 2. CREATE / UPDATE via API
+  const handleSubmitForm = async (eventData: EventFormData, id?: number) => {
+    const method = id ? "PUT" : "POST";
+    const url = id ? `${API_URL}/${id}` : API_URL;
+
+    // For simplicity in Phase 2, we generate a random ID for new events
+    const body = id
+      ? { id, ...eventData }
+      : { id: Math.floor(Math.random() * 10000), ...eventData };
+
+    await fetch(url, {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    fetchEvents(); // Refresh the list
+    handleCancelForm();
+  };
+
+  // 3. DELETE via API
+  const handleDeleteEvent = async (id: number) => {
+    if (window.confirm("Are you sure?")) {
+      await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+      fetchEvents(); // Refresh the list
+    }
+  };
+
+  // State to track the next ID for new events (used in mock mode)
+  // const [nextId, setNextId] = useState<number>(
+  //   Math.max(...mockEvents.map((e) => e.id)) + 1
+  // );
 
   // State for search and filter
   const [searchText, setSearchText] = useState("");
@@ -41,10 +91,11 @@ const App: React.FC = () => {
     });
   }, [events, searchText, cityFilter]); // Dependencies
 
-  // --- CRUD Implementations ---
+  // --- CRUD Implementations with mock data ---
 
-  // CREATE / UPDATE
-  const handleSubmitForm = (eventData: EventFormData, id?: number) => {
+  /*
+  // CREATE / UPDATE with mock data
+  const handleSubmitFormMock = (eventData: EventFormData, id?: number) => {
     if (id) {
       // UPDATE
       setEvents((prevEvents) =>
@@ -66,12 +117,13 @@ const App: React.FC = () => {
     handleCancelForm();
   };
 
-  // DELETE (Remains the same)
-  const handleDeleteEvent = (id: number) => {
+  // DELETE (Remains the same) with mock data
+  const handleDeleteEventMock = (id: number) => {
     if (window.confirm("Are you sure you want to delete this event?")) {
       setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
     }
   };
+  */
 
   // UI Handlers
   const handleOpenCreate = () => {

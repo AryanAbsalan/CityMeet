@@ -1,73 +1,135 @@
-# React + TypeScript + Vite
+# City-Meet: Social Media Event Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**City-Meet** is a full-stack event management platform inspired by Meetup. It allows users to browse, search, and manage local events. The project is built using a modern decoupled architecture with a React frontend and a Python FastAPI backend.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📂 Project Structure
 
-## React Compiler
+```text
+City-Meet/
+├── frontend/                # React + Vite + TypeScript
+│   ├── src/
+│   │   ├── components/      # EventCard, EventList, EventForm, SearchBar
+│   │   ├── App.tsx          # Main state & API logic
+│   │   └── types.ts         # TypeScript interfaces
+│   └── package.json
+│
+├── backend/                 # Python FastAPI
+│   ├── main.py              # API routes & business logic
+│   └── requirements.txt     # Python dependencies
+│
+└── README.md                # Project documentation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛠 Tech Stack
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* **Frontend:** React 18, TypeScript, Vite, Tailwind CSS
+* **Backend:** Python 3.9+, FastAPI, Pydantic, Uvicorn
+* **Database:** In-memory (Phase 2), MSSQL (Phase 3)
+
+---
+
+## 🚀 Getting Started
+
+To run this project locally, you will need to open **two terminals**: one for the frontend and one for the backend.
+
+### 1. Backend Setup (FastAPI)
+
+1. Navigate to the backend folder:
+```bash
+cd backend
+
 ```
+
+
+2. Create and activate a virtual environment:
+```bash
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# Mac/Linux
+python3 -m venv venv
+source venv/bin/activate
+
+```
+
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+
+```
+
+
+4. Start the server:
+```bash
+uvicorn main:app --reload
+
+```
+
+
+*API is now running at: `http://127.0.0.1:8000*`
+*Interactive Docs: `http://127.0.0.1:8000/docs*`
+
+### 2. Frontend Setup (React)
+
+1. Open a new terminal and navigate to the frontend folder:
+```bash
+cd frontend
+
+```
+
+
+2. Install dependencies:
+```bash
+npm install
+
+```
+
+
+3. Start the development server:
+```bash
+npm run dev
+
+```
+
+
+*Frontend is now running at: `http://localhost:5173*`
+
+---
+
+## 📑 Project Roadmap
+
+* [x] **Phase 1: Frontend Development**
+* [x] Scaffold with Vite and Tailwind.
+* [x] Create reusable components (Event Cards, Forms).
+* [x] Implement frontend-only CRUD with mock data.
+
+
+* [x] **Phase 2: Backend Development**
+* [x] Build REST API with FastAPI.
+* [x] Implement CORS to allow frontend communication.
+* [x] Connect React `fetch` calls to Python endpoints.
+
+
+* [ ] **Phase 3: Database Integration**
+* [ ] Set up Microsoft SQL Server (MSSQL).
+* [ ] Integrate SQLAlchemy ORM.
+* [ ] Persist event data permanently.
+
+
+
+---
+
+## 📝 Key Features
+
+* **Dynamic Search:** Filter events by title or city in real-time.
+* **Full CRUD:** Create, Read, Update, and Delete events via the UI.
+* **Type Safety:** Shared data structures via TypeScript (frontend) and Pydantic (backend).
+* **Responsive UI:** Fully functional on mobile and desktop devices.
+
