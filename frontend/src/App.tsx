@@ -152,7 +152,7 @@ const App: React.FC = () => {
           City Meetings: Events
         </h1>
         <p className="text-xl text-gray-500 mt-2">
-          Your guide to local events. (Phase 1: Frontend Mock Data)
+          Your guide to local events.
         </p>
       </header>
 
